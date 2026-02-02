@@ -3,6 +3,13 @@ export async function onRequest(context) {
         return new Response('Method Not Allowed', { status: 405 });
     }
 
+    if (!context.env.API_KEYS) {
+        return new Response(JSON.stringify({ error: 'KV namespace not bound' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     try {
         const url = new URL(context.request.url);
         const code = url.searchParams.get('code');

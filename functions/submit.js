@@ -10,6 +10,13 @@ export async function onRequest(context) {
         });
     }
 
+    if (!context.env.API_KEYS) {
+        return new Response(JSON.stringify({ error: 'KV namespace not bound' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     if (context.request.method !== 'POST') {
         return new Response(`${context.request.method} Method Not Allowed`, { status: 405 });
     }
