@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NXE Dashboard Setup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .step {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success {
+            background: #10b981;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .success h2 {
+            margin-bottom: 10px;
+        }
+
+        .error {
+            background: #ef4444;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .get-key-link {
+            display: inline-block;
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .get-key-link:hover {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎮 NXE Dashboard</h1>
+        <p class="subtitle">Enter the code shown on your TV</p>
+
+        <div id="error" class="error"></div>
+        <div id="success" class="success">
+            <h2>✓ Setup Complete!</h2>
+            <p>You can close this page and return to your dashboard.</p>
+        </div>
+
+        <form id="setupForm">
+            <div class="step">
+                <span class="step-number">1</span>
+                <label for="code">6-Digit Code from TV</label>
+                <input type="text" id="code" name="code" placeholder="123456" pattern="[0-9]{6}" maxlength="6" required
+                    autocomplete="off">
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <label for="apiKey">Steam Web API Key</label>
+                <a href="https://steamcommunity.com/dev/apikey" target="_blank" class="get-key-link">
+                    Get your API key →
+                </a>
+                <input type="text" id="apiKey" name="apiKey" placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" required
+                    autocomplete="off">
+            </div>
+
+            <button type="submit" id="submitBtn">Complete Setup</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('setupForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorDiv = document.getElementById('error');
+        const successDiv = document.getElementById('success');
+
+        // Auto-format code input
+        document.getElementById('code').addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6);
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const code = document.getElementById('code').value;
+            const apiKey = document.getElementById('apiKey').value.trim();
+
+            if (code.length !== 6) {
+                showError('Code must be 6 digits');
+                return;
+            }
+
+            if (!apiKey) {
+                showError('Please enter your Steam API key');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            errorDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code, apiKey })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    form.style.display = 'none';
+                    successDiv.style.display = 'block';
+                } else {
+                    showError(data.error || 'Something went wrong');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Complete Setup';
+                }
+            } catch (error) {
+                showError('Network error. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Complete Setup';
+            }
+        });
+
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
