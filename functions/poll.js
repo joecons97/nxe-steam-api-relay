@@ -21,19 +21,19 @@ export async function onRequest(context) {
             });
         }
 
-        const apiKey = await context.env.API_KEYS.get(code);
+        const data = await context.env.API_KEYS.get(code);
 
-        if (apiKey) {
+        if (data) {
             // Delete after retrieval - one time use
             await context.env.API_KEYS.delete(code);
 
-            return new Response(JSON.stringify({ apiKey }), {
+            return new Response(JSON.stringify({ data }), {
                 headers: { 'Content-Type': 'application/json' }
             });
         }
 
         // Key hasn't been submitted yet
-        return new Response(JSON.stringify({ apiKey: null }), {
+        return new Response(JSON.stringify({ apiKey: null, userId: null }), {
             headers: { 'Content-Type': 'application/json' }
         });
     } catch (e) {
