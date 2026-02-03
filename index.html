@@ -209,11 +209,6 @@
         const errorDiv = document.getElementById('error');
         const successDiv = document.getElementById('success');
 
-        // Auto-format code input
-        document.getElementById('code').addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6);
-        });
-
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
