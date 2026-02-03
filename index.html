@@ -246,7 +246,7 @@
 
             if (!key) {
                 showError("Invalid or missing setup key");
-                return;
+                form.style.display = "none";
             }
 
             form.addEventListener("submit", async (e) => {
