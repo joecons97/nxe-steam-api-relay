@@ -27,7 +27,7 @@ export async function onRequest(context) {
             const data = JSON.parse(raw);
             // data.apiKey, data.userId now available
             
-            await context.env.API_KEYS.delete(code);
+            await context.env.API_KEYS.delete(key);
             
             return new Response(JSON.stringify(data), {
                 headers: { 'Content-Type': 'application/json' }
@@ -40,6 +40,7 @@ export async function onRequest(context) {
                 headers: { 'Content-Type': 'application/json' }
             });
     } catch (e) {
+        console.error(e);
         return new Response(JSON.stringify({ error: 'Something went wrong' }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
