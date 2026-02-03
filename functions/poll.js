@@ -35,7 +35,7 @@ export async function onRequest(context) {
         }
 
         // Key hasn't been submitted yet
-        return new Response(JSON.stringify({ apiKey: null, userId: null }), {
+        return new Response(JSON.stringify(null), {
             headers: { 'Content-Type': 'application/json' }
         });
     } catch (e) {
