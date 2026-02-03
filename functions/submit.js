@@ -33,7 +33,7 @@ export async function onRequest(context) {
 
         // Store in KV with 10 minute expiration
         const data = { apiKey, userId };
-        await context.env.API_KEYS.put(code, JSON.stringify(data), { expirationTtl: 600 });
+        await context.env.API_KEYS.put(code, data, { expirationTtl: 600 });
 
         return new Response(JSON.stringify({ success: true }), {
             headers: { 'Content-Type': 'application/json' }
