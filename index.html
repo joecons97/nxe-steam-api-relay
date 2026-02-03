@@ -6,15 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>NXE Dashboard Setup</title>
     <style>
+
+        @font-face {
+            font-family: 'NXD'; /*a name to be used later*/
+            src: url('NXD.ttf'); /*URL to font*/
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "NXD", sans-serif;
+            color: white;
         }
 
         body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-image: url("defaultbackground.jpg");
+            background-size: cover;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -23,7 +31,7 @@
         }
 
         .container {
-            background: white;
+            background: #2c3d49;
             border-radius: 20px;
             padding: 40px;
             max-width: 500px;
@@ -32,27 +40,18 @@
         }
 
         h1 {
-            color: #333;
             margin-bottom: 10px;
             font-size: 28px;
         }
 
         .subtitle {
-            color: #666;
             margin-bottom: 30px;
             font-size: 14px;
         }
 
-        .step {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
         .step-number {
             display: inline-block;
-            background: #667eea;
+            background: linear-gradient(0deg, rgba(105, 165, 0, 1) 0%, rgba(105, 165, 0, 1) 50%, rgba(134, 182, 48, 1) 60%, rgba(150, 192, 77, 1) 84%);
             color: white;
             width: 24px;
             height: 24px;
@@ -67,8 +66,7 @@
 
         label, a{
             display: block;
-            color: #333;
-            font-weight: 600;
+            font-weight: normal;
             margin-bottom: 8px;
             font-size: 14px;
         }
@@ -77,34 +75,33 @@
             width: 100%;
             padding: 15px;
             font-size: 16px;
-            border: 2px solid #e1e8ed;
-            border-radius: 10px;
+            border: none;
+            border-radius: 8px;
             margin-bottom: 15px;
             transition: border-color 0.3s;
-            font-family: 'Consolas', 'Courier New', monospace;
+            background: white;
+            box-shadow: inset 5px 5px 15px 5px rgba(0,0,0,0.3);
+            
         }
 
         input:focus {
-            outline: none;
-            border-color: #667eea;
+            outline: 2px solid #1b1b1b;
         }
 
         button {
             width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(0deg, rgba(105, 165, 0, 1) 0%, rgba(105, 165, 0, 1) 50%, rgba(134, 182, 48, 1) 60%, rgba(150, 192, 77, 1) 84%);
             color: white;
             border: none;
+            border-radius: 8px;
             padding: 16px;
             font-size: 16px;
-            font-weight: 600;
             cursor: pointer;
-            border-radius: 10px;
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            outline: 2px solid inset rgba(150, 192, 77, 1);
         }
 
         button:active {
@@ -142,7 +139,6 @@
         a {
             color: #667eea;
             text-decoration: none;
-            font-weight: 600;
         }
 
         a:hover {
@@ -160,7 +156,6 @@
             padding: 12px 20px;
             border-radius: 8px;
             margin-top: 10px;
-            transition: background 0.3s;
         }
 
         .get-key-link:hover {
@@ -171,7 +166,7 @@
 
 <body>
     <div class="container">
-        <h1>🎮 NXE Dashboard</h1>
+        <h1>NXE Dashboard</h1>
         <p class="subtitle">Enter the code shown on your TV</p>
 
         <div id="error" class="error"></div>
@@ -193,7 +188,7 @@
                 <div class="title-container">
                     <label for="apiKey">Steam User Id</label>
                     <a href="https://store.steampowered.com/account/" target="_blank">
-                        Find User Id ->
+                        Find User Id
                     </a>
                 </div>
                 <input type="text" id="userId" name="userId" placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" required
@@ -205,7 +200,7 @@
                 <div class="title-container">
                     <label for="apiKey">Steam Web API Key</label>
                     <a href="https://steamcommunity.com/dev/apikey" target="_blank">
-                        Find Key ->
+                        Find Key
                     </a>
                 </div>
                 <input type="text" id="apiKey" name="apiKey" placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" required
