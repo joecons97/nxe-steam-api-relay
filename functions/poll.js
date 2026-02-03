@@ -12,16 +12,16 @@ export async function onRequest(context) {
 
     try {
         const url = new URL(context.request.url);
-        const code = url.searchParams.get('code');
+        const key = url.searchParams.get('key');
 
-        if (!code) {
-            return new Response(JSON.stringify({ error: 'Missing code' }), {
-                status: 400,
+        if (!key) {
+            return new Response(JSON.stringify(), {
+                status: 401,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
 
-        const raw = await context.env.API_KEYS.get(code);
+        const raw = await context.env.API_KEYS.get(key);
 
         if (raw) {
             const data = JSON.parse(raw);
@@ -35,9 +35,10 @@ export async function onRequest(context) {
         }
 
         // Key hasn't been submitted yet
-        return new Response(JSON.stringify(null), {
-            headers: { 'Content-Type': 'application/json' }
-        });
+        return new Response(JSON.stringify(), {
+                status: 401,
+                headers: { 'Content-Type': 'application/json' }
+            });
     } catch (e) {
         return new Response(JSON.stringify({ error: 'Something went wrong' }), {
             status: 500,
