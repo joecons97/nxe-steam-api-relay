@@ -21,13 +21,15 @@ export async function onRequest(context) {
             });
         }
 
-        const data = await context.env.API_KEYS.get(code);
+        const raw = await context.env.API_KEYS.get(code);
 
-        if (data) {
-            // Delete after retrieval - one time use
+        if (raw) {
+            const data = JSON.parse(raw);
+            // data.apiKey, data.userId now available
+            
             await context.env.API_KEYS.delete(code);
-
-            return new Response(JSON.stringify({ data }), {
+            
+            return new Response(JSON.stringify(data), {
                 headers: { 'Content-Type': 'application/json' }
             });
         }
