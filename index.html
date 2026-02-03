@@ -1,272 +1,304 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>NXE Dashboard Setup</title>
+        <style>
+            @font-face {
+                font-family: "NXD"; /*a name to be used later*/
+                src: url("NXD.ttf"); /*URL to font*/
+            }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NXE Dashboard Setup</title>
-    <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "NXD", sans-serif;
+                color: white;
+            }
 
-        @font-face {
-            font-family: 'NXD'; /*a name to be used later*/
-            src: url('NXD.ttf'); /*URL to font*/
-        }
+            body {
+                background-image: url("defaultbackground.jpg");
+                background-size: cover;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "NXD", sans-serif;
-            color: white;
-        }
+            .container {
+                background: #2c3d49;
+                border-radius: 20px;
+                padding: 40px;
+                max-width: 500px;
+                width: 100%;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            }
 
-        body {
-            background-image: url("defaultbackground.jpg");
-            background-size: cover;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+            h1 {
+                margin-bottom: 10px;
+                font-size: 28px;
+                font-weight: bold;
+            }
 
-        .container {
-            background: #2c3d49;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
+            .subtitle {
+                margin-bottom: 30px;
+                font-size: 14px;
+            }
 
-        h1 {
-            margin-bottom: 10px;
-            font-size: 28px;
-            font-weight: bold;
-        }
+            .step-number {
+                display: inline-block;
+                background: linear-gradient(
+                    0deg,
+                    rgba(105, 165, 0, 1) 0%,
+                    rgba(105, 165, 0, 1) 50%,
+                    rgba(134, 182, 48, 1) 60%,
+                    rgba(150, 192, 77, 1) 84%
+                );
+                color: white;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                text-align: center;
+                line-height: 24px;
+                font-size: 14px;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
 
-        .subtitle {
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
+            label,
+            a {
+                display: block;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
 
-        .step-number {
-            display: inline-block;
-            background: linear-gradient(0deg, rgba(105, 165, 0, 1) 0%, rgba(105, 165, 0, 1) 50%, rgba(134, 182, 48, 1) 60%, rgba(150, 192, 77, 1) 84%);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 24px;
-            font-size: 14px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
+            input {
+                width: 100%;
+                padding: 15px;
+                font-size: 16px;
+                border: none;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                transition: border-color 0.3s;
+                background: white;
+                color: black;
+                box-shadow: inset 5px 5px 15px 5px rgba(0, 0, 0, 0.3);
+            }
 
-        label, a{
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
+            input:focus {
+                outline: 2px solid #1b1b1b;
+            }
 
-        input {
-            width: 100%;
-            padding: 15px;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            transition: border-color 0.3s;
-            background: white;
-            color: black;;
-            box-shadow: inset 5px 5px 15px 5px rgba(0,0,0,0.3);
-            
-        }
+            button {
+                width: 100%;
+                background: linear-gradient(
+                    0deg,
+                    rgba(105, 165, 0, 1) 0%,
+                    rgba(105, 165, 0, 1) 50%,
+                    rgba(134, 182, 48, 1) 60%,
+                    rgba(150, 192, 77, 1) 84%
+                );
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 16px;
+                font-size: 16px;
+                cursor: pointer;
+                transition:
+                    transform 0.2s,
+                    box-shadow 0.2s;
+            }
 
-        input:focus {
-            outline: 2px solid #1b1b1b;
-        }
+            button:hover {
+                outline: 2px solid inset rgba(150, 192, 77, 1);
+            }
 
-        button {
-            width: 100%;
-            background: linear-gradient(0deg, rgba(105, 165, 0, 1) 0%, rgba(105, 165, 0, 1) 50%, rgba(134, 182, 48, 1) 60%, rgba(150, 192, 77, 1) 84%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 16px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
+            button:active {
+                transform: translateY(0);
+            }
 
-        button:hover {
-            outline: 2px solid inset rgba(150, 192, 77, 1);
-        }
+            button:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none;
+            }
 
-        button:active {
-            transform: translateY(0);
-        }
+            .success {
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                text-align: center;
+                display: none;
+            }
 
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+            .success h2 {
+                margin-bottom: 10px;
+            }
 
-        .success {
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            display: none;
-        }
+            .error {
+                background: #ef4444;
+                color: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-bottom: 15px;
+                display: none;
+            }
 
-        .success h2 {
-            margin-bottom: 10px;
-        }
+            a {
+                color: #667eea;
+                text-decoration: none;
+            }
 
-        .error {
-            background: #ef4444;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            display: none;
-        }
+            a:hover {
+                text-decoration: underline;
+            }
 
-        a {
-            color: #667eea;
-            text-decoration: none;
-        }
+            .step .title-container {
+                display: flex;
+                justify-content: space-between;
+            }
 
-        a:hover {
-            text-decoration: underline;
-        }
+            .get-key-link {
+                display: inline-block;
+                background: #f8f9fa;
+                padding: 12px 20px;
+                border-radius: 8px;
+                margin-top: 10px;
+            }
 
-        .step .title-container {
-            display: flex;
-            justify-content: space-between;
-        }
+            .get-key-link:hover {
+                background: #e9ecef;
+            }
+        </style>
+    </head>
 
-        .get-key-link {
-            display: inline-block;
-            background: #f8f9fa;
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
+    <body>
+        <div class="container">
+            <h1>NXE Dashboard</h1>
+            <p class="subtitle">
+                Please enter your Steam details to Authenticate
+            </p>
 
-        .get-key-link:hover {
-            background: #e9ecef;
-        }
-    </style>
-</head>
+            <div id="error" class="error"></div>
+            <div id="success" class="success">
+                <h2>✓ Setup Complete!</h2>
+                <p>You can close this page and return to your dashboard.</p>
+            </div>
 
-<body>
-    <div class="container">
-        <h1>NXE Dashboard</h1>
-        <p class="subtitle">Please enter your Steam details to Authenticate</p>
+            <form id="setupForm">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="title-container">
+                        <label for="apiKey">Steam User Id</label>
+                        <a
+                            href="https://store.steampowered.com/account/"
+                            target="_blank"
+                        >
+                            Find User Id
+                        </a>
+                    </div>
+                    <input
+                        type="text"
+                        id="userId"
+                        name="userId"
+                        placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                        required
+                        autocomplete="off"
+                    />
+                </div>
 
-        <div id="error" class="error"></div>
-        <div id="success" class="success">
-            <h2>✓ Setup Complete!</h2>
-            <p>You can close this page and return to your dashboard.</p>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="title-container">
+                        <label for="apiKey">Steam Web API Key</label>
+                        <a
+                            href="https://steamcommunity.com/dev/apikey"
+                            target="_blank"
+                        >
+                            Find Key
+                        </a>
+                    </div>
+                    <input
+                        type="text"
+                        id="apiKey"
+                        name="apiKey"
+                        placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                        required
+                        autocomplete="off"
+                    />
+                </div>
+
+                <button type="submit" id="submitBtn">Complete Setup</button>
+            </form>
         </div>
 
-        <form id="setupForm">
-            <div class="step">
-                <span class="step-number">1</span>
-                <div class="title-container">
-                    <label for="apiKey">Steam User Id</label>
-                    <a href="https://store.steampowered.com/account/" target="_blank">
-                        Find User Id
-                    </a>
-                </div>
-                <input type="text" id="userId" name="userId" placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" required
-                    autocomplete="off">
-            </div>
+        <script>
+            const form = document.getElementById("setupForm");
+            const submitBtn = document.getElementById("submitBtn");
+            const errorDiv = document.getElementById("error");
+            const successDiv = document.getElementById("success");
 
-            <div class="step">
-                <span class="step-number">2</span>
-                <div class="title-container">
-                    <label for="apiKey">Steam Web API Key</label>
-                    <a href="https://steamcommunity.com/dev/apikey" target="_blank">
-                        Find Key
-                    </a>
-                </div>
-                <input type="text" id="apiKey" name="apiKey" placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" required
-                    autocomplete="off">
-            </div>
-
-            <button type="submit" id="submitBtn">Complete Setup</button>
-        </form>
-    </div>
-
-    <script>
-        const form = document.getElementById('setupForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const errorDiv = document.getElementById('error');
-        const successDiv = document.getElementById('success');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const url = new URL(context.request.url);
-            const key = url.searchParams.get('key');
-            const userId = document.getElementById('userId').value.trim();
-            const apiKey = document.getElementById('apiKey').value.trim();
+            const urlParams = new URLSearchParams(window.location.search);
+            const key = urlParams.get("key");
 
             if (!key) {
-                showError('Invalid or missing setup key');
-                return;
-            }
-            
-            if (!userId) {
-                showError('Please enter your Steam User ID');
+                showError("Invalid or missing setup key");
                 return;
             }
 
-            if (!apiKey) {
-                showError('Please enter your Steam API key');
-                return;
-            }
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
 
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
-            errorDiv.style.display = 'none';
+                const userId = document.getElementById("userId").value.trim();
+                const apiKey = document.getElementById("apiKey").value.trim();
 
-            try {
-                const response = await fetch('/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ key, userId, apiKey })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    form.style.display = 'none';
-                    successDiv.style.display = 'block';
-                } else {
-                    showError(data.error || 'Something went wrong');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Complete Setup';
+                if (!userId) {
+                    showError("Please enter your Steam User ID");
+                    return;
                 }
-            } catch (error) {
-                showError('Network error. Please try again.');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Complete Setup';
+
+                if (!apiKey) {
+                    showError("Please enter your Steam API key");
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Submitting...";
+                errorDiv.style.display = "none";
+
+                try {
+                    const response = await fetch("/submit", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ key, userId, apiKey }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        form.style.display = "none";
+                        successDiv.style.display = "block";
+                    } else {
+                        showError(data.error || "Something went wrong");
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = "Complete Setup";
+                    }
+                } catch (error) {
+                    showError("Network error. Please try again.");
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Complete Setup";
+                }
+            });
+
+            function showError(message) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = "block";
             }
-        });
-
-        function showError(message) {
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-        }
-    </script>
-</body>
-
+        </script>
+    </body>
 </html>
