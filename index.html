@@ -4,7 +4,6 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>NXE Dashboard Setup</title>
-        <script src="https://unpkg.com/jsencrypt@3.3.2/bin/jsencrypt.min.js"></script>
         <style>
             @font-face {
                 font-family: "NXD"; /*a name to be used later*/
@@ -236,6 +235,7 @@
             </form>
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/jsencrypt@latest/bin/jsencrypt.min.js"></script>
         <script>
             const form = document.getElementById("setupForm");
             const submitBtn = document.getElementById("submitBtn");
@@ -280,7 +280,7 @@
                     const plainData = JSON.stringify({ token, userId, apiKey });
                     const encryptedData = encrypt.encrypt(plainData);
 
-                    if (!encrypted) {
+                    if (!encryptedData) {
                         throw new Error("Encryption failed");
                     }
 
@@ -291,7 +291,7 @@
                         },
                         body: JSON.stringify({
                             token: token,
-                            encryptedData: encrypted,
+                            encryptedData: encryptedData,
                         }),
                     });
 
