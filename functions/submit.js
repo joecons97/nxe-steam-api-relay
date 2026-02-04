@@ -22,18 +22,17 @@ export async function onRequest(context) {
     }
 
     try {
-        const { key, userId, apiKey } = await context.request.json();
+        const { token, encryptedData } = await context.request.json();
 
-        if (!key || !userId || !apiKey) {
-            return new Response(JSON.stringify({ error: 'Missing key, userId, or apiKey' }), {
+        if (!token || !encryptedData) {
+            return new Response(JSON.stringify({ error: 'Missing required fields' }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
 
         // Store in KV with 10 minute expiration
-        const data = { apiKey, userId };
-        await context.env.API_KEYS.put(key, JSON.stringify(data), { expirationTtl: 600 });
+        await context.env.API_KEYS.put(token, encryptedData, { expirationTtl: 600 });
 
         return new Response(JSON.stringify({ success: true }), {
             headers: { 'Content-Type': 'application/json' }

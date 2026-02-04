@@ -12,24 +12,22 @@ export async function onRequest(context) {
 
     try {
         const url = new URL(context.request.url);
-        const key = url.searchParams.get('key');
+        const token = url.searchParams.get('token');
 
-        if (!key) {
+        if (!token) {
             return new Response(JSON.stringify(), {
                 status: 401,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
 
-        const raw = await context.env.API_KEYS.get(key);
+        const encryptedData = await context.env.API_KEYS.get(token);
 
-        if (raw) {
-            const data = JSON.parse(raw);
-            // data.apiKey, data.userId now available
-            
-            await context.env.API_KEYS.delete(key);
-            
-            return new Response(JSON.stringify(data), {
+        if (encryptedData) {
+            // Delete after retrieval
+            await context.env.API_KEYS.delete(token);
+
+            return new Response(JSON.stringify({ encryptedData }), {
                 headers: { 'Content-Type': 'application/json' }
             });
         }

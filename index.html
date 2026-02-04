@@ -242,12 +242,15 @@
             const successDiv = document.getElementById("success");
 
             const urlParams = new URLSearchParams(window.location.search);
-            const key = urlParams.get("key");
+            const token = urlParams.get("token");
+            const publicKeyBase64 = params.get("pubkey");
 
-            if (!key) {
-                showError("Invalid or missing setup key");
+            if (!token || !publicKeyBase64) {
+                showError("Invalid link!");
                 form.style.display = "none";
             }
+
+            const publicKeyPem = atob(decodeURIComponent(publicKeyBase64));
 
             form.addEventListener("submit", async (e) => {
                 e.preventDefault();
@@ -270,12 +273,25 @@
                 errorDiv.style.display = "none";
 
                 try {
+                    const encrypt = new JSEncrypt();
+                    encrypt.setPublicKey(publicKeyPem);
+
+                    const plainData = JSON.stringify({ token, userId, apiKey });
+                    const encryptedData = encrypt.encrypt(plainData);
+
+                    if (!encrypted) {
+                        throw new Error("Encryption failed");
+                    }
+
                     const response = await fetch("/submit", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify({ key, userId, apiKey }),
+                        body: JSON.stringify({
+                            token: token,
+                            encryptedData: encrypted,
+                        }),
                     });
 
                     const data = await response.json();
@@ -294,6 +310,29 @@
                     submitBtn.textContent = "Complete Setup";
                 }
             });
+
+            async function convertXmlKeyToPem(xmlKey) {
+                // Extract modulus and exponent
+                const modulusMatch = xmlKey.match(/<Modulus>(.*?)<\/Modulus>/);
+                const exponentMatch = xmlKey.match(
+                    /<Exponent>(.*?)<\/Exponent>/,
+                );
+
+                if (!modulusMatch || !exponentMatch) {
+                    throw new Error("Invalid key format");
+                }
+
+                const modulus = modulusMatch[1];
+                const exponent = exponentMatch[1];
+
+                // Convert to PEM format
+                // This is a simplified conversion - for production use a proper library
+                const pem = `-----BEGIN PUBLIC KEY-----
+                            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA${modulus}${exponent}
+                            -----END PUBLIC KEY-----`;
+
+                return pem;
+            }
 
             function showError(message) {
                 errorDiv.textContent = message;
