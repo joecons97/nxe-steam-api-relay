@@ -312,29 +312,6 @@
                 }
             });
 
-            async function convertXmlKeyToPem(xmlKey) {
-                // Extract modulus and exponent
-                const modulusMatch = xmlKey.match(/<Modulus>(.*?)<\/Modulus>/);
-                const exponentMatch = xmlKey.match(
-                    /<Exponent>(.*?)<\/Exponent>/,
-                );
-
-                if (!modulusMatch || !exponentMatch) {
-                    throw new Error("Invalid key format");
-                }
-
-                const modulus = modulusMatch[1];
-                const exponent = exponentMatch[1];
-
-                // Convert to PEM format
-                // This is a simplified conversion - for production use a proper library
-                const pem = `-----BEGIN PUBLIC KEY-----
-                            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA${modulus}${exponent}
-                            -----END PUBLIC KEY-----`;
-
-                return pem;
-            }
-
             function showError(message) {
                 errorDiv.textContent = message;
                 errorDiv.style.display = "block";
